@@ -1,6 +1,6 @@
 <?php
 
-function jtm_reaction_table() {
+function jtm_database_table() {
 
     global $wpdb;
 
@@ -23,9 +23,24 @@ function jtm_reaction_table() {
 
     ) $charset_collate;";
 
+
+    $sql_votes = "CREATE TABLE IF NOT EXISTS $table_name (
+
+        id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+        post_id BIGINT(20) UNSIGNED NOT NULL,
+        user_id BIGINT(20) UNSIGNED NOT NULL,
+        vote_type VARCHAR(20) NOT NULL,
+        vote_count INT UNSIGNED DEFAULT 1,
+        PRIMARY KEY (id),
+        KEY post_id(post_id),
+        KEY user_id(user_id),
+        KEY voted_at(voted_at)
+    ) $charset_collate;";
+
     require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
     dbDelta($sql);
+    dbDelta($sql_votes);
 
     add_option('jtm_db_version', JITM_PLUGIN_DB_VERSION);
 }

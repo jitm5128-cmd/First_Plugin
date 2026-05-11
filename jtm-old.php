@@ -57,4 +57,4 @@ require_once JTM_PLUGIN_DIR_PATH. 'inc/admin-setting.php';
 
 require_once plugin_dir_path(__FILE__) . 'inc/db.php';
 
-register_activation_hook(__FILE__, 'jtm_reaction_table');
+register_activation_hook(__FILE__, 'jtm_database_table');

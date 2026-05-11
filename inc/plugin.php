@@ -13,6 +13,8 @@ class JTM_plugin{
     public function jtm_plugin_admin_scripts(){
         wp_enqueue_style( 'jtm-plugin-admin-css', JTM_PLUGIN_DIR_URL .'admin/css/admin.css', '',JTM_PLUGIN_VERSION);
         wp_enqueue_script( 'jtm-plugin-admin-js', JTM_PLUGIN_DIR_URL .'admin/js/admin.js', '',JTM_PLUGIN_VERSION , true);
+        wp_enqueue_script( 'jtm-plugin-ajax-js', JTM_PLUGIN_DIR_URL .'admin/js/ajax.js', ['jquery'],JTM_PLUGIN_VERSION , true);
+        wp_localize_script( 'jtm-plugin-ajax-js', 'jtm_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
     }
     
     
