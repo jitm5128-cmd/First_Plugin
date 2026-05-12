@@ -33,22 +33,72 @@ function jtm_parameter_shortcode($atts= array()){
 add_shortcode( 'JTM_TST_PARA', 'jtm_parameter_shortcode');
 
 //project meta information
+// Project Meta Information Shortcode
 function jtm_meta_shortcode($atts){
-    $atts = shortcode_atts( array(
-        'id' => get_the_ID,
-    ),$atts,'PROJECT_META'
-);
 
-$project_url = get_post_meta( $atts['id'],'project_url',true);
-$project_completion = get_post_meta( $atts['id'],'project_completion_duration',true);
-$project_cost = get_post_meta( $atts['id'],'project_estimated_cost',true);
+    $atts = shortcode_atts(
+        array(
+            'id' => get_the_ID(),
+        ),
+        $atts,
+        'PROJECT_META'
+    );
 
-$html = '<div class="project-meta';
-    $html .= '<span><a href="'.$project_url.'"target="_blank">Visit Project</a></span>';
-    $html .= '<span>'.$project_completion.'</span>';
-    $html .= '<span'.$project_cost.'</span>';
+    $project_url        = get_post_meta($atts['id'], 'project_url', true);
+    $project_completion = get_post_meta($atts['id'], 'project_completion_duration', true);
+    $project_cost       = get_post_meta($atts['id'], 'project_estimated_cost', true);
 
- $html .= '</div';
- return $html;
+    $html = '<div class="project-meta">';
+
+    $html .= '<span><a href="' . esc_url($project_url) . '" target="_blank">Visit Project</a></span>';
+
+    $html .= '<span>' . esc_html($project_completion) . '</span>';
+
+    $html .= '<span>' . esc_html($project_cost) . '</span>';
+
+    $html .= '</div>';
+
+    return $html;
 }
-add_shortcode( 'get_post_meta', 'jtm_parameter_shortcode');
+
+add_shortcode('PROJECT_META', 'jtm_meta_shortcode');
+
+
+// Voting Buttons Shortcode
+function jit_post_voting_buttons($atts){
+
+    $attrs = shortcode_atts(
+        array(
+            'like'    => 'Like',
+            'dislike' => 'Dislike',
+        ),
+        $atts,
+        'POST_VOTING'
+    );
+
+    $post_id = get_the_ID();
+    $user_id = get_current_user_id();
+
+    $html = '<div class="jtm-voting-buttons">';
+
+    $html .= sprintf(
+        '<button class="jtm-like" data-post-id="%s" data-user-id="%s">%s</button>',
+        esc_attr($post_id),
+        esc_attr($user_id),
+        esc_html($attrs['like'])
+    );
+
+    $html .= sprintf(
+        '<button class="jtm-dislike" data-post-id="%s" data-user-id="%s">%s</button>',
+        esc_attr($post_id),
+        esc_attr($user_id),
+        esc_html($attrs['dislike'])
+    );
+
+    $html .= '</div>';
+
+    return $html;
+}
+
+add_shortcode('POST_VOTING', 'jit_post_voting_buttons');
+?>
